@@ -6,7 +6,23 @@ const middlewares = jsonServer.defaults();
 
 server.use(middlewares);
 // Add this before server.use(router)
-
+server.use((req, res, next) => {
+    if (["POST", "PUT", "PATCH"].includes(req.method)) {
+        if (!validateEmail(req.body.email)) {
+            return res.status(422).send({
+                error: {
+                    email: "Email không đúng định dạng",
+                },
+            });
+        }
+        if (req.body.last_name === "admin") {
+            return res.status(500).send({
+                error: "Server bị lỗi",
+            });
+        }
+    }
+    setTimeout(next, DELAY);
+});
 // const validateEmail = (email) => {
 //     return String(email)
 //         .toLowerCase()
