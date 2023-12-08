@@ -6,13 +6,20 @@ const middlewares = jsonServer.defaults();
 
 server.use(middlewares);
 // Add this before server.use(router)
-
+const validateEmail = (email) => {
+    return String(email)
+        .toLowerCase()
+        .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+};
 server.use(
     jsonServer.rewriter({
         "/api/*": "/$1",
         "/students/:resource/:id/show": "/:resource/:id",
     })
 );
+server.use(jsonServer.bodyParser);
 server.get((req, res, next) => {
     if (["POST", "PUT", "PATCH"].includes(req.method)) {
         if (!validateEmail(req.body.email)) {
