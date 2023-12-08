@@ -20,7 +20,7 @@ server.use(
     })
 );
 server.use(jsonServer.bodyParser);
-server.get((req, res, next) => {
+server.use((req, res, next) => {
     if (["POST", "PUT", "PATCH"].includes(req.method)) {
         if (!validateEmail(req.body.email)) {
             return res.status(422).send({
