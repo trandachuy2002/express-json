@@ -14,7 +14,6 @@ const validateEmail = (email) => {
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         );
 };
-server.use(jsonServer.bodyParser);
 
 server.use((req, res, next) => {
     if (["POST", "PUT", "PATCH"].includes(req.method)) {
@@ -55,7 +54,9 @@ server.use(
         "/students/:resource/:id/show": "/:resource/:id",
     })
 );
+
 server.use(router);
+
 server.listen(3000, () => {
     console.log("JSON Server is running");
 });
