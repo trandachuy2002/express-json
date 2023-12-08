@@ -2,8 +2,8 @@
 const jsonServer = require("json-server");
 
 const server = jsonServer.create();
-const filePath = path.join("/tmp", "db.json");
-const router = jsonServer.router(filePath);
+const router = path.join("/tmp", "db.json");
+// const router = jsonServer.router(filePath);
 
 // const router = jsonServer.router(path.resolve(os.tmpdir() + "db.json"));
 // const router = jsonServer.router("/tmp/db.json");
