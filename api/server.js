@@ -40,6 +40,26 @@ server.get((req, res, next) => {
     }, DELAY);
 });
 
+server.delete("/students/:id", (req, res) => {
+    try {
+        const studentId = parseInt(req.params.id, 10);
+
+        // Xóa sinh viên có id cụ thể
+        const removedStudent = router.db.get("students").remove({ id: studentId }).write();
+
+        // Kiểm tra xem có sinh viên nào được xóa không
+        if (removedStudent.length === 0) {
+            return res.status(404).json({ success: false, error: "Không tìm thấy sinh viên" });
+        }
+
+        res.status(200).json({ success: true });
+        console.log("Xóa thành công");
+    } catch (error) {
+        console.error("Lỗi trong quá trình xóa:", error);
+        res.status(500).json({ success: false, error: "Lỗi máy chủ nội bộ" });
+    }
+});
+
 server.use(router);
 
 server.listen(3000, () => {
