@@ -58,6 +58,12 @@ server.use((req, res, next) => {
         next();
     }, DELAY);
 });
+server.use(
+    jsonServer.rewriter({
+        "/api/*": "/$1",
+        "/students": "/students/:id",
+    })
+);
 server.delete("/students/:id", (req, res) => {
     try {
         const studentId = parseInt(req.params.id, 10);
