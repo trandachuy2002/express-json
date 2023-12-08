@@ -59,6 +59,19 @@ server.delete("/students/:id", (req, res) => {
         res.status(500).json({ success: false, error: "Lỗi máy chủ nội bộ" });
     }
 });
+router.render = (req, res) => {
+    let data = res.locals.data;
+    const { originalUrl } = req;
+    if (req.method === "GET" && (originalUrl === "/students" || /^\/students\?.*$/.test(originalUrl))) {
+        data = data.map((student) => ({
+            id: student.id,
+            avatar: student.avatar,
+            last_name: student.last_name,
+            email: student.email,
+        }));
+    }
+    res.jsonp(data);
+};
 
 server.use(router);
 
