@@ -20,8 +20,47 @@ server.use(
     })
 );
 server.use(jsonServer.bodyParser);
-server.use((req, res, next) => {
-    if (["POST", "PUT", "PATCH"].includes(req.method)) {
+
+server.post((req, res, next) => {
+    if (["POST"].includes(req.method)) {
+        if (!validateEmail(req.body.email)) {
+            return res.status(422).send({
+                error: {
+                    email: "Email không đúng định dạng",
+                },
+            });
+        }
+        if (req.body.last_name === "admin") {
+            return res.status(500).send({
+                error: "Server bị lỗi",
+            });
+        }
+    }
+    setTimeout(() => {
+        next();
+    }, DELAY);
+});
+server.put((req, res, next) => {
+    if (["PUT"].includes(req.method)) {
+        if (!validateEmail(req.body.email)) {
+            return res.status(422).send({
+                error: {
+                    email: "Email không đúng định dạng",
+                },
+            });
+        }
+        if (req.body.last_name === "admin") {
+            return res.status(500).send({
+                error: "Server bị lỗi",
+            });
+        }
+    }
+    setTimeout(() => {
+        next();
+    }, DELAY);
+});
+server.patch((req, res, next) => {
+    if (["PATCH"].includes(req.method)) {
         if (!validateEmail(req.body.email)) {
             return res.status(422).send({
                 error: {
@@ -59,6 +98,7 @@ server.delete("/students/:id", (req, res) => {
         res.status(500).json({ success: false, error: "Lỗi máy chủ nội bộ" });
     }
 });
+
 router.render = (req, res) => {
     let data = res.locals.data;
     const { originalUrl } = req;
